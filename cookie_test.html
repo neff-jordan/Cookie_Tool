@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Cookie Test Page</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: white;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 2em;
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    button {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .set-btn { background: #10b981; color: white; }
+    .read-btn { background: #3b82f6; color: white; }
+    .delete-btn { background: #ef4444; color: white; }
+    .secure-btn { background: #f59e0b; color: white; }
+    .batch-btn { background: #8b5cf6; color: white; }
+    #output {
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .info {
+      background: rgba(59, 130, 246, 0.2);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border-left: 4px solid #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍪 Enhanced Cookie Test Page</h1>
+    <p>Test various cookie configurations to trigger Chrome's database writes.</p>
+
+    <div class="button-group">
+      <button class="set-btn" onclick="setBasicCookie()">Set Basic Cookie</button>
+      <button class="secure-btn" onclick="setSecureCookie()">Set Secure Cookie</button>
+      <button class="batch-btn" onclick="setBatchCookies()">Set 10 Cookies</button>
+    </div>
+    
+    <div class="button-group">
+      <button class="read-btn" onclick="readCookies()">Read All Cookies</button>
+      <button class="delete-btn" onclick="deleteAllCookies()">Delete All Cookies</button>
+    </div>
+
+    <div id="output">Click a button to get started...</div>
+
+    <div class="info">
+      <strong>💡 Tip:</strong> Chrome may take 5-30 seconds to write cookies to disk. 
+      After setting cookies, wait a moment and watch your monitor script for activity.
+      Setting multiple cookies at once increases the chance of triggering a database write.
+    </div>
+  </div>
+
+  <script>
+    let cookieCounter = 0;
+
+    function setBasicCookie() {
+      const d = new Date();
+      d.setTime(d.getTime() + (30*24*60*60*1000)); // expires in 30 days
+      const cookieName = `test_cookie_${Date.now()}`;
+      document.cookie = `${cookieName}=hello_world_${cookieCounter++}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+      
+      updateOutput(`✅ Cookie set: ${cookieName}\n\nNote: Chrome may take 5-30 seconds to write to disk.\nCheck your monitor script!`);
+    }
+
+    function setSecureCookie() {
+      if (location.protocol !== 'https:') {
+        updateOutput('⚠️ Secure cookies require HTTPS.\nTry the basic cookie instead, or serve this page over HTTPS.');
+        return;
+      }
+      
+      const d = new Date();
+      d.setTime(d.getTime() + (30*24*60*60*1000));
+      const cookieName = `secure_cookie_${Date.now()}`;
+      document.cookie = `${cookieName}=secure_value_${cookieCounter++}; expires=${d.toUTCString()}; path=/; Secure; SameSite=None`;
+      
+      updateOutput(`✅ Secure cookie set: ${cookieName}\n\nThis cookie has Secure flag and SameSite=None.`);
+    }
+
+    function setBatchCookies() {
+      const d = new Date();
+      d.setTime(d.getTime() + (30*24*60*60*1000));
+      
+      for (let i = 0; i < 10; i++) {
+        const cookieName = `batch_cookie_${Date.now()}_${i}`;
+        document.cookie = `${cookieName}=value_${i}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+      }
+      
+      updateOutput(`✅ Set 10 cookies in batch!\n\nBatch operations are more likely to trigger immediate disk writes.\nCheck your monitor script now!`);
+    }
+
+    function readCookies() {
+      const cookies = document.cookie;
+      if (!cookies) {
+        updateOutput('📭 No cookies found.');
+        return;
+      }
+      
+      const cookieArray = cookies.split('; ');
+      let output = `📊 Found ${cookieArray.length} cookie(s):\n\n`;
+      cookieArray.forEach((cookie, i) => {
+        output += `${i + 1}. ${cookie}\n`;
+      });
+      
+      updateOutput(output);
+    }
+
+    function deleteAllCookies() {
+      const cookies = document.cookie.split('; ');
+      let deleted = 0;
+      
+      cookies.forEach(cookie => {
+        const name = cookie.split('=')[0];
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        deleted++;
+      });
+      
+      updateOutput(`🗑️ Deleted ${deleted} cookie(s).\n\nNote: Deletions also need to be written to disk.`);
+    }
+
+    function updateOutput(text) {
+      document.getElementById('output').innerText = text;
+    }
+
+    // Auto-read cookies on page load
+    window.addEventListener('load', readCookies);
+  </script>
+</body>
+</html>
