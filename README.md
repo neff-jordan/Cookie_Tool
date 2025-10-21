@@ -47,6 +47,14 @@ python3 chrome_cookie_extractor.py
 
 **macOS:**
 ```bash
+# Clone the repository
+gh repo clone yourusername/Cookie_Tool
+cd Cookie_Tool
+
+# Install dependencies
+pip3 install -r requirements.txt
+
+# Make executable
 pip install pyinstaller
 pyinstaller --onefile --windowed --name "Cookie Analyzer" chrome_cookie_extractor.py
 ```
