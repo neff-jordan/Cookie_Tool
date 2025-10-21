@@ -23,13 +23,7 @@ Real-time monitoring and comprehensive security analysis for Chrome browser cook
 
 ## Download
 
-### Option 1: Pre-built Executable (Easiest)
-
-Download from [Releases](https://github.com/neff-jordan/Cookie_Tool/releases/tag/v1.0.0): 
-
-- **macOS**: `CookieAnalyzer-v1.0-macOS.dmg`
-
-### Option 2: Run from Source
+### Option 1: Run from Source
 
 ```bash
 # Clone the repository
@@ -43,7 +37,7 @@ pip3 install -r requirements.txt
 python3 chrome_cookie_extractor.py
 ```
 
-### Option 3: Create Standalone Executable
+### Option 2: Create Standalone Executable
 
 **macOS:**
 ```bash
