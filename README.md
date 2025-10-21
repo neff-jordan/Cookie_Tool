@@ -33,14 +33,14 @@ Download from [Releases](https://github.com/neff-jordan/Cookie_Tool/releases/tag
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cookie-analyzer.git
-cd cookie-analyzer
+gh repo clone yourusername/Cookie_Tool
+cd Cookie_Tool
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Run
-python cookie_analyzer_crossplatform.py
+python chrome_cookie_extractor.py
 ```
 
 ### Option 3: Create Standalone Executable
