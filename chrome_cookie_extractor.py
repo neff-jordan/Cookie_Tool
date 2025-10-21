@@ -264,7 +264,6 @@ def print_banner():
     print("\n" + "="*70)
     print("🍪 CHROME COOKIE SECURITY ANALYZER")
     print("   Real-time monitoring & comprehensive security analysis")
-    print("   Author: Jordan Neff")
     print("="*70)
 
 
