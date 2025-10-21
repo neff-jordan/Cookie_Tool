@@ -25,7 +25,7 @@ Real-time monitoring and comprehensive security analysis for Chrome browser cook
 
 ### Option 1: Pre-built Executable (Easiest)
 
-Download from [Releases](https://github.com/yourusername/cookie-analyzer/releases):
+Download from [Releases](https://github.com/neff-jordan/Cookie_Tool/releases/tag/v1.0.0): 
 
 - **macOS**: `CookieAnalyzer-v1.0-macOS.dmg`
 
@@ -43,13 +43,12 @@ pip install -r requirements.txt
 python cookie_analyzer_crossplatform.py
 ```
 
-## Quick Start
+### Option 3: Create Standalone Executable
 
-### macOS
+**macOS:**
 ```bash
-# 1. Download and extract
-# 2. Double-click INSTALL.command
-# 3. Double-click "Run Cookie Analyzer.command"
+pip install pyinstaller
+pyinstaller --onefile --windowed --name "Cookie Analyzer" chrome_cookie_extractor.py
 ```
 
 ## Requirements
@@ -57,18 +56,6 @@ python cookie_analyzer_crossplatform.py
 - **Python 3.7+** (for source installation)
 - **Google Chrome** installed and used at least once
 
-## Building from Source
-
-### Create Standalone Executable
-
-**macOS:**
-```bash
-pip install pyinstaller
-pyinstaller --onefile --windowed \
-  --name "Cookie Analyzer" \
-  --add-data "cookie_database_watcher_crossplatform.py:." \
-  cookie_analyzer_crossplatform.py
-```
 
 ## 📝 To-Do / Future Features
 
