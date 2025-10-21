@@ -1,6 +1,5 @@
 """
-Background Cookie Database Watcher - NEW COOKIES ONLY VERSION
-Continuously monitors Chrome's cookie database for NEW cookies only
+Background Cookie Database Watcher 
 
 Author: Jordan Neff
 Date: 2025-10-08
@@ -415,7 +414,6 @@ def main():
     
     # Run indefinitely (or set duration in seconds)
     monitor.start_monitoring()
-
 
 if __name__ == "__main__":
     main()

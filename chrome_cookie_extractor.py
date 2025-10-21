@@ -1,6 +1,5 @@
 """
 Cookie Analyzer - Main Control Script
-Comprehensive cookie security analysis and monitoring for Chrome
 
 Author: Jordan Neff
 Date: 2025-10-14
