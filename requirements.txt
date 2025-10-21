@@ -1,0 +1,7 @@
+# Cookie Analyzer Dependencies - macOS
+
+# Core encryption
+pycryptodome>=3.19.0
+
+# File monitoring
+watchdog>=3.0.0
