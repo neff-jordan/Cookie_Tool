@@ -37,10 +37,10 @@ gh repo clone yourusername/Cookie_Tool
 cd Cookie_Tool
 
 # Install dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Run
-python chrome_cookie_extractor.py
+python3 chrome_cookie_extractor.py
 ```
 
 ### Option 3: Create Standalone Executable
