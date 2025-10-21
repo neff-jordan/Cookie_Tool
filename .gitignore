@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Temporary databases
+*.db
+Cookies_*.db
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and exports
+*.log
+*.json
+new_cookies_log.json
+cookie_report.json
+
+# Distribution packages (upload to Releases instead)
+*.dmg
+*.app
+*.zip
+
+# Virtual environment
+lib/
+bin/
+include/
+pyvenv.cfg
+pip-selfcheck.json
