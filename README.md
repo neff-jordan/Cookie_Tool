@@ -16,8 +16,6 @@ Real-time monitoring and comprehensive security analysis for Chrome browser cook
 ## What It Checks
 
 - ✅ **Secure flag** - Should be sent over HTTPS only
-- ✅ **HttpOnly flag** - Protected from JavaScript access (XSS protection)
-- ✅ **SameSite attribute** - CSRF protection (None/Lax/Strict)
 - ✅ **Expiration time** - How long cookies persist
 - ✅ **Domain scope** - Which sites can access the cookie
 
@@ -61,14 +59,10 @@ pyinstaller --onefile --windowed --name "Cookie Analyzer" chrome_cookie_extracto
 
 ## 📝 To-Do / Future Features
 
-- [ ] Support for Firefox cookies
-- [ ] Support for Edge cookies
-- [ ] Support for Brave cookies
 - [ ] Cookie deletion feature
 - [ ] Browser extension version
 - [ ] Export to CSV format
 - [ ] Scheduled scans
-- [ ] Cookie comparison over time
 
 ## License
 
