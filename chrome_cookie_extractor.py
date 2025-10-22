@@ -17,7 +17,6 @@ from Crypto.Cipher import AES
 from hashlib import pbkdf2_hmac
 from typing import Dict, List, Tuple
 
-# Import the monitoring class (assuming it's in cookie_monitor.py)
 try:
     from cookie_database_watcher import BackgroundCookieMonitor
 except ImportError:
