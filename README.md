@@ -21,7 +21,10 @@ Real-time monitoring and comprehensive security analysis for Chrome browser cook
 
 ## Download
 
-### Option 1: Run from Source
+### Option 1: Download Latest Release
+https://github.com/neff-jordan/Cookie_Tool/releases/tag/v1.0.0 
+
+### Option 2: Run from Source
 
 ```bash
 # Clone the repository
@@ -35,7 +38,7 @@ pip3 install -r requirements.txt
 python3 chrome_cookie_extractor.py
 ```
 
-### Option 2: Create Standalone Executable
+### Option 3: Create Standalone Executable
 
 **macOS:**
 ```bash
