@@ -1,9 +1,9 @@
 """
-Cookie Analyzer - Main Control Script
+Cookie Analyzer - Main Control Script 
 
 Author: Jordan Neff
-Date: 2025-10-14
-Description: Main interface that orchestrates cookie scanning and monitoring
+Date: 2025-11-04
+Description: Main interface that orchestrates cookie scanning, monitoring, and quarantine
 """
 
 import os
@@ -17,11 +17,18 @@ from Crypto.Cipher import AES
 from hashlib import pbkdf2_hmac
 from typing import Dict, List, Tuple
 
+# Import the monitoring classes
 try:
     from cookie_database_watcher import BackgroundCookieMonitor
 except ImportError:
     print("⚠️  Warning: cookie_database_watcher.py not found in current directory")
     BackgroundCookieMonitor = None
+
+try:
+    from cookie_quarantine_monitor import QuarantineCookieMonitor
+except ImportError:
+    print("⚠️  Warning: cookie_quarantine_monitor.py not found in current directory")
+    QuarantineCookieMonitor = None
 
 
 class CookieAnalyzer:
@@ -262,7 +269,7 @@ def print_banner():
     """Print application banner."""
     print("\n" + "="*70)
     print("🍪 CHROME COOKIE SECURITY ANALYZER")
-    print("   Real-time monitoring & comprehensive security analysis")
+    print("   Real-time monitoring, quarantine & comprehensive security analysis")
     print("="*70)
 
 
@@ -273,9 +280,10 @@ def print_menu():
     print("1. 🔍 Scan All Existing Cookies (Full Report)")
     print("2. 📊 Scan All Cookies (Summary Only)")
     print("3. 🎯 Start Real-Time Cookie Monitor (New Cookies Only)")
-    print("4. 💾 Export Full Cookie Report to JSON")
-    print("5. 📈 View Cookie Statistics")
-    print("6. ❌ Exit")
+    print("4. 🛡️  Start Quarantine Monitor (Delete Risky Cookies)")
+    print("5. 💾 Export Full Cookie Report to JSON")
+    print("6. 📈 View Cookie Statistics")
+    print("7. ❌ Exit")
     print("-" * 70)
 
 
@@ -289,7 +297,7 @@ def main():
         print_menu()
         
         try:
-            choice = input("\n👉 Enter your choice (1-6): ").strip()
+            choice = input("\n👉 Enter your choice (1-7): ").strip()
             
             if choice == "1":
                 # Full scan with details
@@ -307,7 +315,7 @@ def main():
                 input("\n\nPress Enter to return to menu...")
                 
             elif choice == "3":
-                # Start real-time monitor
+                # Start real-time monitor (passive)
                 if BackgroundCookieMonitor is None:
                     print("\n❌ Error: cookie_database_watcher.py not found!")
                     print("   Make sure the file is in the same directory.")
@@ -315,7 +323,7 @@ def main():
                     continue
                 
                 print("\n🎯 Starting Real-Time Cookie Monitor")
-                print("   This will monitor for NEW cookies only")
+                print("   This will monitor for NEW cookies only (passive logging)")
                 print("   Press Ctrl+C to stop monitoring\n")
                 
                 try:
@@ -334,6 +342,51 @@ def main():
                 input("\n\nPress Enter to return to menu...")
                 
             elif choice == "4":
+                # Start quarantine monitor (NEW FEATURE)
+                if QuarantineCookieMonitor is None:
+                    print("\n❌ Error: cookie_quarantine_monitor.py not found!")
+                    print("   Make sure the file is in the same directory.")
+                    input("\nPress Enter to return to menu...")
+                    continue
+                
+                print("\n🛡️  Starting Quarantine Monitor")
+                print("   This will actively protect you from risky cookies!")
+                print("   Features:")
+                print("   • Detect new cookies instantly")
+                print("   • Analyze security in real-time")
+                print("   • Ask you to ALLOW or BLOCK risky cookies")
+                print("   • Delete blocked cookies automatically")
+                print("\n   ⚠️  IMPORTANT: For best results, close Chrome before blocking cookies")
+                print("   Press Ctrl+C to stop monitoring\n")
+                
+                # Configuration options
+                try:
+                    auto_block = input("   🚫 Auto-block CRITICAL risk cookies? (y/n, default=n): ").strip().lower() == 'y'
+                    auto_allow = input("   ✅ Auto-allow LOW risk cookies? (y/n, default=n): ").strip().lower() == 'y'
+                    duration_input = input("   ⏱️  Run for how many seconds? (leave blank for indefinite): ").strip()
+                    duration = int(duration_input) if duration_input else None
+                except ValueError:
+                    auto_block = False
+                    auto_allow = False
+                    duration = None
+                
+                monitor = QuarantineCookieMonitor(
+                    poll_interval=1,  # Check every second for fast response
+                    interactive_mode=True
+                )
+                
+                try:
+                    monitor.start_monitoring(
+                        duration=duration,
+                        auto_block_critical=auto_block,
+                        auto_allow_safe=auto_allow
+                    )
+                except KeyboardInterrupt:
+                    print("\n\n⏹️  Quarantine monitor stopped by user")
+                
+                input("\n\nPress Enter to return to menu...")
+                
+            elif choice == "5":
                 # Export to JSON
                 print("\n💾 Export Cookie Report")
                 filename = input("   Enter filename (default: cookie_report.json): ").strip()
@@ -346,7 +399,7 @@ def main():
                 analyzer.scan_all_cookies(show_details=False, export_file=filename)
                 input("\n\nPress Enter to return to menu...")
                 
-            elif choice == "5":
+            elif choice == "6":
                 # Quick stats
                 print("\n📈 Gathering cookie statistics...")
                 cookies = analyzer.scan_all_cookies(show_details=False)
@@ -363,14 +416,14 @@ def main():
                 
                 input("\n\nPress Enter to return to menu...")
                 
-            elif choice == "6":
+            elif choice == "7":
                 # Exit
                 print("\n👋 Thanks for using Cookie Security Analyzer!")
                 print("   Stay safe online! 🔒\n")
                 sys.exit(0)
                 
             else:
-                print("\n⚠️  Invalid choice. Please enter a number between 1-6.")
+                print("\n⚠️  Invalid choice. Please enter a number between 1-7.")
                 input("Press Enter to continue...")
                 
         except KeyboardInterrupt:
