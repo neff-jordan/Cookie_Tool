@@ -61,13 +61,6 @@ pyinstaller --onefile --windowed --name "Cookie Analyzer" chrome_cookie_extracto
 - **Google Chrome** installed and used at least once
 
 
-## 📝 To-Do / Future Features
-
-- [ ] Cookie deletion feature
-- [ ] Browser extension version
-- [ ] Export to CSV format
-- [ ] Scheduled scans
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
